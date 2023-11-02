@@ -432,6 +432,15 @@ class _PaginationState {
       throw NyxxException('Cannot add pagination controls to builder: too many component rows');
     }
 
+    if (builder.components case final components?
+        when components.any(
+          (element) => element.components.any(
+            (element) => element is ButtonBuilder && {jumpToStartId, jumpToEndId, previousId, nextId}.contains(element.customId),
+          ),
+        )) {
+      return;
+    }
+
     final showJumpToEnds = options?.showJumpToEnds ?? pagination.options.showJumpToEnds ?? true;
     final showPageIndex = options?.showPageIndex ?? pagination.options.showPageIndex ?? true;
 
